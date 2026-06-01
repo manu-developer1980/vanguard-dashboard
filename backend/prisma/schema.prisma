@@ -1,0 +1,60 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tenant {
+  id           String          @id @default(uuid())
+  name         String
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  users        User[]
+  sites        MonitoredSite[]
+  subscription Subscription?
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  role      String   @default("ADMIN")
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model MonitoredSite {
+  id         String     @id @default(uuid())
+  name       String
+  url        String
+  status     String     @default("ACTIVE")
+  tenantId   String
+  tenant     Tenant     @relation(fields: [tenantId], references: [id])
+  auditLogs  AuditLog[]
+  createdAt  DateTime   @default(now())
+}
+
+model AuditLog {
+  id             String        @id @default(uuid())
+  siteId         String
+  site           MonitoredSite @relation(fields: [siteId], references: [id])
+  issueType      String
+  severity       String
+  description    String
+  resolved       Boolean       @default(false)
+  s3ReportKey    String?
+  createdAt      DateTime      @default(now())
+}
+
+model Subscription {
+  id               String   @id @default(uuid())
+  tenantId         String   @unique
+  tenant           Tenant   @relation(fields: [tenantId], references: [id])
+  stripeCustomerId String   @unique
+  stripePriceId    String
+  status           String
+  endsAt           DateTime?
+}

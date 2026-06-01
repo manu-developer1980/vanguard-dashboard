@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  # 🐘 SERVICIO 1: Nuestra base de datos relacional
+  postgres_db:
+    image: postgres:latest
+    container_name: vanguard-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: local_password_2026
+      POSTGRES_DB: vanguard_platform
+    volumes:
+      - pgdata_vanguard:/var/lib/postgresql/data
+    networks:
+      - vanguard_network
+
+  # ☁️ SERVICIO 2: AWS S3 Local simulado con tu licencia Hobby
+  localstack_aws:
+    image: localstack/localstack:latest
+    container_name: localstack_vanguard
+    ports:
+      - "127.0.0.1:4566:4566"
+    environment:
+      LOCALSTACK_AUTH_TOKEN: tu_token_hobby_aqui # 👈 Mapeo directo de clave: valor
+      SERVICES: s3
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - vanguard_network
+
+# 💾 DEFINICIÓN DE VOLÚMENES PERSISTENTES
+volumes:
+  pgdata_vanguard:
+    driver: local # 👈 ¡ESTO SOLUCIONA EL ERROR! Le damos un mapeo explícito al volumen
+
+# 🌐 DEFINICIÓN DE LA RED
+networks:
+  vanguard_network:
+    driver: bridge
