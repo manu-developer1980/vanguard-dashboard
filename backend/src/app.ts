@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import prisma from './config/database.js';
+import tenantRoutes from './routes/tenantRoutes.js';
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.get('/health', (req: Request, res: Response) => {
     timestamp: new Date().toISOString()
   });
 });
+
+app.use("/api/v1/tenants", tenantRoutes);
 
 // Función asíncrona para arrancar la base de datos y el servidor en el orden correcto
 async function startServer() {
