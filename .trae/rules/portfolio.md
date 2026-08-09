@@ -968,3 +968,190 @@ If a technology is introduced, Manuel should eventually be able to answer:
 > **What are its trade-offs?**
 
 > **What failure modes does it introduce?**
+
+# Vanguard Product Definition
+
+## What is Vanguard?
+
+**Vanguard Dashboard** is a multi-tenant web platform for monitoring and managing websites and web platforms from a centralized dashboard.
+
+A **tenant** represents a website, web platform or customer environment being monitored.
+
+The purpose of Vanguard is to provide a single place where users can:
+
+* see the health and status of their monitored tenants;
+* inspect monitoring results;
+* identify problems and incidents;
+* review historical information;
+* receive or manage alerts;
+* understand the operational state of their web platforms.
+
+Vanguard should model realistic Web Platform Engineering concerns rather than being a generic dashboard or CRUD application.
+
+The product should be designed around the idea of **monitoring and operating multiple web platforms from one place**.
+
+---
+
+## Product scope
+
+The initial product should focus on monitoring websites and web platforms.
+
+Potential monitoring areas include:
+
+* HTTP availability;
+* HTTP status codes;
+* response time;
+* SSL/TLS certificate status;
+* domain information;
+* uptime history;
+* incidents;
+* monitoring failures;
+* alerts.
+
+Additional capabilities may be introduced later when they solve a real product requirement.
+
+Examples may include:
+
+* WordPress health;
+* WordPress version;
+* plugin/theme status;
+* security findings;
+* DNS information;
+* infrastructure information;
+* deployment information;
+* application errors;
+* integrations.
+
+These are **potential future capabilities, not MVP requirements**.
+
+Do not implement them until their value and requirements have been established.
+
+---
+
+## Multi-tenancy
+
+Vanguard must be designed as a **multi-tenant application**.
+
+The system should eventually support multiple tenants without allowing data belonging to one tenant to be incorrectly exposed to another.
+
+Tenant isolation is therefore an important architectural and security concern.
+
+When implementing features involving tenant data, explicitly consider:
+
+* tenant identification;
+* authorization;
+* data isolation;
+* query scoping;
+* access control;
+* auditability.
+
+Do not assume that hiding tenant data in the UI is sufficient for isolation.
+
+---
+
+## Users
+
+Vanguard should support authenticated users who can access one or more tenants.
+
+The exact user and permission model should be defined during product discovery.
+
+Potential concepts include:
+
+* users;
+* tenants;
+* memberships;
+* roles;
+* permissions.
+
+Do not implement a complex RBAC system until the actual requirements justify it.
+
+---
+
+## Monitoring model
+
+A monitored tenant may contain one or more monitored resources.
+
+Conceptually:
+
+```text
+User
+  │
+  └── Membership
+        │
+        └── Tenant
+              │
+              ├── Website
+              ├── Monitoring checks
+              ├── Incidents
+              ├── Alerts
+              └── Historical results
+```
+
+This is a conceptual model only.
+
+The final data model must be designed after the MVP requirements are established.
+
+---
+
+## MVP principle
+
+The MVP must answer one simple question:
+
+> **Can a user manage multiple tenants and understand whether their monitored websites are healthy?**
+
+The MVP should therefore prioritise:
+
+1. tenant management;
+2. monitored website/resource management;
+3. basic health checks;
+4. dashboard visibility;
+5. monitoring history;
+6. basic incident/alert information.
+
+Do not add advanced infrastructure or architectural patterns simply to increase the apparent complexity of the MVP.
+
+---
+
+## Product evolution
+
+Vanguard should evolve through real requirements.
+
+The architecture should initially favour a simple, maintainable implementation.
+
+As requirements grow, Vanguard may eventually need to address:
+
+* scheduled monitoring;
+* background workers;
+* asynchronous processing;
+* retries;
+* idempotency;
+* queues;
+* caching;
+* alert delivery;
+* audit logs;
+* observability;
+* horizontal scaling.
+
+These capabilities must be introduced **because the product requires them**, not because they are technologies worth displaying on a résumé.
+
+---
+
+## Portfolio objective
+
+Vanguard is intended to become the principal technical project showcased by Manuel's portfolio.
+
+The project should demonstrate progression from:
+
+```text
+Web Platform Engineering
+        ↓
+Modern Full-Stack Development
+        ↓
+Software Architecture
+        ↓
+Production Engineering
+```
+
+The portfolio must only claim capabilities that actually exist in the implementation.
+
+Architecture, technology and performance claims must be supported by the actual project.
